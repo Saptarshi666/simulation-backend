@@ -19,7 +19,7 @@ def mynewmethod_method(json_file_path=None):
 if __name__ == "__main__":
     import os
 
-    from simulation_backend import (
+    from HelperFunctions import (
         find_input_file_in_subfolders,
         create_tmp_from_input,
         save_results,
