@@ -5,6 +5,13 @@ import pandas as pd
 from acousticDE.FiniteVolumeMethod.FVM import run_fvm_sim, check_should_cancel
 from acousticDE.FiniteVolumeMethod.CreateMeshFVM import generate_mesh
 
+from HelperFunctions import (
+    find_input_file_in_subfolders,
+    create_tmp_from_input,
+    save_results,
+    plot_results,
+)
+
 def de_method(json_file_path=None):
     result_container = {}
     if json_file_path is not None:
@@ -153,12 +160,6 @@ def de_method(json_file_path=None):
 
 
 if __name__ == "__main__":
-    from simulation_backend import (
-        find_input_file_in_subfolders,
-        create_tmp_from_input,
-        save_results,
-        plot_results,
-    )
 
     # Load the input file
     json_file_name = find_input_file_in_subfolders(
