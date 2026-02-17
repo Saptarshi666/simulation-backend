@@ -1,0 +1,41 @@
+{
+    "geo_path": "MeasurementRoom.geo",
+    "msh_path": "MeasurementRoom.msh",
+    "results": [
+        {
+            "sourceX": 1.0,
+            "sourceY": 1.0,
+            "sourceZ": 1.0,
+            "frequencies": [125, 250, 500, 1000, 2000, 4000],
+            "responses": [
+                {
+                    "x": 2.0,
+                    "y": 2.0,
+                    "z": 1.5,
+                    "parameters": {
+                        "edt": [],
+                        "t20": [],
+                        "t30": [],
+                        "c80": [],
+                        "d50": [],
+                        "ts": [],
+                        "spl_t0_freq": []
+                    },
+                    "receiverResults": []
+                }
+            ],
+            "resultType": "DE",
+            "percentage": 0
+        }
+    ],
+    "absorption_coefficients": {
+        "Material1": "0.1, 0.15, 0.2, 0.25, 0.3, 0.35",
+        "Material2": "0.05, 0.1, 0.15, 0.2, 0.25, 0.3"
+    },
+    "simulationSettings": {
+        "de_lc": 0.3,
+        "sim_len_type": "ir_length",
+        "de_ir_length": 2.0,
+        "edt": -60
+    }
+}

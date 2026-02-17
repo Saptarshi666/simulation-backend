@@ -1,0 +1,4 @@
+pyroomacoustics
+gmsh
+numpy
+matplotlib
