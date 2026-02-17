@@ -16,13 +16,14 @@ jobs:
 
           echo "Checking branch: $BRANCH_NAME"
 
-          if [[ ! "$BRANCH_NAME" =~ ^(main|dev|feature\/.+|bugfix\/.+)$ ]]; then
+          if [[ ! "$BRANCH_NAME" =~ ^(main|dev|test-branch|feature\/.+|bugfix\/.+)$ ]]; then
             echo "❌ Error: Branch '$BRANCH_NAME' does not follow the naming convention."
             echo "Allowed patterns:"
             echo "  - main"
             echo "  - dev"
             echo "  - feature/<name>"
             echo "  - bugfix/<name>"
+            echo " - test-branch"
             exit 1
           fi
 
