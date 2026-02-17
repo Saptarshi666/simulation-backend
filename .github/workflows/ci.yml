@@ -1,0 +1,29 @@
+name: Branch Name Check
+
+on:
+  push:
+    branches:
+      - '**'   # Run on every branch push
+
+jobs:
+  validate-branch-name:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check branch naming convention
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+
+          echo "Checking branch: $BRANCH_NAME"
+
+          if [[ ! "$BRANCH_NAME" =~ ^(main|dev|feature\/.+|bugfix\/.+)$ ]]; then
+            echo "❌ Error: Branch '$BRANCH_NAME' does not follow the naming convention."
+            echo "Allowed patterns:"
+            echo "  - main"
+            echo "  - dev"
+            echo "  - feature/<name>"
+            echo "  - bugfix/<name>"
+            exit 1
+          fi
+
+          echo "✅ Branch name is valid."
