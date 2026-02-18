@@ -1,17 +1,20 @@
-{
-    "DG": {
+[
+    {
+        "id": "DG",
         "container_image": "choras/dg-solver:latest",
         "env_vars": {"CUDA_VISIBLE_DEVICES": "0"},
         "description": "Discontinuous Galerkin method"
     },
-    "DE": {
-        "container_image": "choras/de-solver:latest", 
+    {
+        "id": "DE", 
+        "container_image": "choras/de-solver:latest",
         "env_vars": {},
         "description": "Diffusion Equation method"
     },
-    "MYNEW": {
-        "container_image": "choras/mynew-solver:latest",
+    {
+        "id": "MYNEW",
+        "container_image": "choras/mynew-solver:latest", 
         "env_vars": {},
         "description": "My New Method"
     }
-}
+]
