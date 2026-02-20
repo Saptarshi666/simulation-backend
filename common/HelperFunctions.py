@@ -1,6 +1,8 @@
 import os
 import json
 import matplotlib.pyplot as plt
+import time
+import requests
 
 def find_input_file_in_subfolders(
     dirname=os.path.dirname(__file__), file_name="exampleInput.json"
@@ -63,18 +65,18 @@ def create_tmp_from_input(json_input_file):
     return json_tmp_file
 
 
-def save_results(json_tmp_file):
-    """Saves the contents of a json file to the output folder.
+""" def save_results(json_tmp_file):
+    "Saves the contents of a json file to the output folder.
 
     Parameters
     ----------
     json_tmp_file : str
         The json file to save the contents of.
 
-    """
+
 
     def get_unique_filename(base_name="results", extension="json", subfolder="output"):
-        """
+        
         Generate a unique filename inside a subfolder relative to this script.
 
         Parameters
@@ -88,7 +90,7 @@ def save_results(json_tmp_file):
         subfolder : str
             The subfolder to check for the file(name)s.
 
-        """
+        
         # Get the folder where the script is located
         script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -112,7 +114,7 @@ def save_results(json_tmp_file):
     with open(file_name, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
-    print(f"Data written to {file_name}")
+    print(f"Data written to {file_name}") """
 
 def plot_dg_results(json_output):
 
@@ -140,4 +142,25 @@ def plot_results(json_output):
 
     plt.figure()
     plt.plot(result_container["results"][0]["responses"][0]["receiverResults"][0]["data"])
-    plt.show()
+    plt.show() 
+
+def save_results(json_tmp_file,url= "http://backend:5001/receive",max_retries = 5, delay = 2):
+    for attempt in range(1, max_retries + 1):
+        try:
+            with open(json_tmp_file, "rb") as f:
+                response = requests.post(url, files={"file": f})
+
+            if response.status_code == 200:
+                print("Successfully sent file.")
+                return True
+
+            print(f"Attempt {attempt}: Server returned {response.status_code}")
+
+        except requests.RequestException as e:
+            print(f"Attempt {attempt}: Request failed - {e}")
+
+        time.sleep(delay)
+
+    print("Max retries reached. Giving up.")
+    return False
+    
