@@ -144,7 +144,7 @@ def plot_results(json_output):
     plt.plot(result_container["results"][0]["responses"][0]["receiverResults"][0]["data"])
     plt.show() 
 
-def save_results(json_tmp_file,url= "http://backend:5001/receive",max_retries = 5, delay = 2):
+def save_results(json_tmp_file, url="http://host.docker.internal:5001/receive",max_retries = 5, delay = 2):
     for attempt in range(1, max_retries + 1):
         try:
             with open(json_tmp_file, "rb") as f:
