@@ -160,8 +160,14 @@ def de_method(json_file_path=None):
 
 
 if __name__ == "__main__":
-
-    # Load the input file
+    json_file_path = os.environ.get("JSON_PATH")
+    from HelperFunctions import (
+            find_input_file_in_subfolders,
+            create_tmp_from_input,
+            save_results,
+            plot_results
+        )
+    """# Load the input file
     json_file_name = find_input_file_in_subfolders(
         os.path.dirname(__file__), "exampleInput_DE.json"
     )
@@ -175,4 +181,11 @@ if __name__ == "__main__":
     save_results(json_tmp_file)
 
     # Plot the results
-    plot_results(json_tmp_file)
+    plot_results(json_tmp_file)"""
+    print(f"Running DE method with JSON_PATH={json_file_path}")
+    de_method(json_file_path)
+    # Save the results to a separate file
+    save_results(json_file_path)
+    # Plot the results
+    plot_results(json_file_path)
+    print("DG container finished.")
