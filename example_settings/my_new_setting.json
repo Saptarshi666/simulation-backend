@@ -16,7 +16,7 @@
             "name": "MyNewMethod parameter 2",
             "id": "mnm_2",
             "type": "float",
-            "display": "slider",
+            "display": "text",
             "min": 0,
             "max": 100,
             "step": 0.1,
