@@ -332,26 +332,38 @@ def dg_method(json_file_path: str | Path, save_results_to_json: bool = True):
 
 
 if __name__ == "__main__":
+    json_file_path = os.environ.get("JSON_PATH")
     from HelperFunctions import (
-        find_input_file_in_subfolders,
-        create_tmp_from_input,
-        save_results,
-        plot_dg_results
-    )
+            find_input_file_in_subfolders,
+            create_tmp_from_input,
+            save_results,
+            plot_dg_results
+        )
+    """    if json_file_path is None:
+        # Load the input file
+        file_name = find_input_file_in_subfolders(
+            os.path.dirname(__file__), "exampleInput_DG.json"
+        )
+        json_tmp_file = create_tmp_from_input(file_name)
 
-    # Load the input file
-    file_name = find_input_file_in_subfolders(
-        os.path.dirname(__file__), "exampleInput_DG.json"
-    )
-    json_tmp_file = create_tmp_from_input(file_name)
+        # Run the method
+        gmsh.initialize()
+        dg_method(json_tmp_file)
+        gmsh.finalize()
 
-    # Run the method
+        # Save the results to a separate file
+        save_results(json_tmp_file)
+
+        # Plot the results
+        plot_dg_results(json_tmp_file)
+    else:"""
+    print(f"Running DG method with JSON_PATH={json_file_path}")
     gmsh.initialize()
-    dg_method(json_tmp_file)
+    dg_method(json_file_path)
     gmsh.finalize()
-
     # Save the results to a separate file
-    save_results(json_tmp_file)
-
+    save_results(json_file_path)
     # Plot the results
-    plot_dg_results(json_tmp_file)
+    plot_dg_results(json_file_path)
+    print("DG container finished.")
+

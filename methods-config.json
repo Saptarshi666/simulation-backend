@@ -1,20 +1,33 @@
 [
     {
-        "id": "DG",
-        "container_image": "choras/dg-solver:latest",
+        "simulationType": "DG",
+        "container_image": "dg_image:latest",
         "env_vars": {"CUDA_VISIBLE_DEVICES": "0"},
-        "description": "Discontinuous Galerkin method"
+        "label": "Discontinuous Galerkin method",
+        "settings":"dg_setting.json",
+        "entryFile":"DGInterface.py",
+        "repositoryURL":"https://github.com/Building-acoustics-TU-Eindhoven/edg-acoustics/",
+        "documentationURL":"https://dg-roomacoustics.readthedocs.io/en/latest/"
     },
     {
-        "id": "DE", 
-        "container_image": "choras/de-solver:latest",
+        "simulationType": "DE", 
+        "container_image": "de_image:latest",
         "env_vars": {},
-        "description": "Diffusion Equation method"
+        "label": "Diffusion Equation method",
+        "settings":"de_setting.json",
+        "entryFile":"DEInterface.py",
+        "repositoryURL":"https://github.com/Building-acoustics-TU-Eindhoven/acousticDE/",
+        "documentationURL":"https://building-acoustics-tu-eindhoven.github.io/acousticDE/index.html"
     },
     {
-        "id": "MYNEW",
-        "container_image": "choras/mynew-solver:latest", 
+        "simulationType": "MyNewMethod",
+        "container_image": "mynew_image:latest", 
         "env_vars": {},
-        "description": "My New Method"
+        "label": "My New Method",
+        "entryFile":"MyNewMethodInterface.py",
+        "settings":"my_new_setting.json",
+        "repositoryURL":"",
+        "documentationURL":""
+
     }
 ]
