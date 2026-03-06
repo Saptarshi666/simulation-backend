@@ -188,4 +188,4 @@ if __name__ == "__main__":
     save_results(json_file_path)
     # Plot the results
     plot_results(json_file_path)
-    print("DG container finished.")
+    print("DE container finished.")
