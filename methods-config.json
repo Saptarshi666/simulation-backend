@@ -1,8 +1,8 @@
 [
     {
         "simulationType": "DG",
-        "container_image": "dg_image:latest",
-        "env_vars": {"CUDA_VISIBLE_DEVICES": "0"},
+        "containerImage": "dg_image:latest",
+        "envVars": {"CUDA_VISIBLE_DEVICES": "0"},
         "label": "Discontinuous Galerkin method",
         "settings":"dg_setting.json",
         "entryFile":"DGinterface.py",
@@ -11,8 +11,8 @@
     },
     {
         "simulationType": "DE", 
-        "container_image": "de_image:latest",
-        "env_vars": {},
+        "containerImage": "de_image:latest",
+        "envVars": {},
         "label": "Diffusion Equation method",
         "settings":"de_setting.json",
         "entryFile":"DEinterface.py",
@@ -21,8 +21,8 @@
     },
     {
         "simulationType": "MyNewMethod",
-        "container_image": "mynew_image:latest", 
-        "env_vars": {},
+        "containerImage": "mynew_image:latest", 
+        "envVars": {},
         "label": "My New Method",
         "entryFile":"MyNewMethodInterface.py",
         "settings":"my_new_setting.json",
