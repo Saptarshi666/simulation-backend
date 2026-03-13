@@ -5,7 +5,6 @@ import gmsh
 import numpy as np
 import warnings
 import os
-import HelperFunctions
 
 def read_json_input(json_file_path):
     """Read the input JSON file.
@@ -336,18 +335,25 @@ def pyroomacoustics_method(json_file_path=None):
 
 if __name__ == "__main__":
 
+    from HelperFunctions import (
+            find_input_file_in_subfolders,
+            create_tmp_from_input,
+            save_results,
+            plot_results
+        )
+
     # Load the input file
-    file_name = HelperFunctions.find_input_file_in_subfolders(
+    file_name = find_input_file_in_subfolders(
         os.path.dirname(__file__), "exampleInput_pyroomacoustics.json"
     )
-    json_tmp_file = HelperFunctions.create_tmp_from_input(file_name)
+    json_tmp_file = create_tmp_from_input(file_name)
 
     # Run the method
     print(f"Created temporary settings file: {json_tmp_file}")
     pyroomacoustics_method(json_tmp_file)
 
     # Save the results to a separate file
-    HelperFunctions.save_results(json_tmp_file)
+    save_results(json_tmp_file)
 
     # Plot results
-    HelperFunctions.plot_results(json_tmp_file)
+    plot_results(json_tmp_file)
