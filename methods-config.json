@@ -29,5 +29,16 @@
         "repositoryURL":"",
         "documentationURL":""
 
+    },
+    {
+        "simulationType": "PA",
+        "containerImage": "pa_image:latest", 
+        "envVars": {},
+        "label": "Pyromacoustics Method",
+        "entryFile":"pyroomacoustics_interface.py",
+        "settings":"examples.json",
+        "repositoryURL":"",
+        "documentationURL":""
+
     }
 ]
