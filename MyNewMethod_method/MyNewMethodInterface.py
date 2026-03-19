@@ -2,18 +2,27 @@
 
 # Import the relevant functions from your package (/submodule)
 from My_New_Method import simulation_method
+from simulation_method_interface import SimulationMethod
 
 
-# This function will be called from app/services/simulation_service.py 
-# and the main function below
-def mynewmethod_method(json_file_path=None):
+# This function will be called from the main function below, while it runs
+# in the container. The container is started in backend/app/simulation_service. 
 
-    print("mynewmethod_method: starting simulation")
+class MyNewMethod(SimulationMethod):
+    def __init__(self):
+        super().__init__()
 
-    # Call the appropriate function(s) in your package to simulate
-    simulation_method(json_file_path)
+    def run_simulation(self, json_file_path: str):
+        self._mynewmethod_method(json_file_path)
 
-    print("mynewmethod_method: simulation done!")
+    def _mynewmethod_method(self, json_file_path=None):
+
+        print("mynewmethod_method: starting simulation")
+
+        # Call the appropriate function(s) in your package to simulate
+        simulation_method(json_file_path)
+
+        print("mynewmethod_method: simulation done!")
 
 
 if __name__ == "__main__":
@@ -32,7 +41,8 @@ if __name__ == "__main__":
     json_tmp_file = create_tmp_from_input(file_name)
 
     # Run the method
-    mynewmethod_method(json_tmp_file)
+    my_new_method = MyNewMethod()
+    my_new_method.run_simulation(json_tmp_file)
 
     # Save the results to a separate file
     save_results(json_tmp_file)

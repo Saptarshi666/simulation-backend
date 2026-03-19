@@ -23,6 +23,8 @@ COPY common/MeasurementRoom.geo .
 COPY common/MeasurementRoom.msh .
 COPY common/HelperFunctions.py .
 COPY deeponet_method/exampleInput_deeponet_acoustics.json .
+COPY common/simulation_method_interface.py .
+
 
 # Default command to run the containerized DE method
 CMD ["python", "DeepONetInterface.py"]

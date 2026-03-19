@@ -23,6 +23,8 @@ COPY dg_method/DGinterface.py .
 COPY common/MeasurementRoom.geo .
 COPY common/MeasurementRoom.msh .
 COPY common/HelperFunctions.py .
+COPY common/simulation_method_interface.py .
+
 COPY dg_method/exampleInput_DG.json .
 
 # Default command to run the containerized DG method

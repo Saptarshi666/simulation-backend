@@ -21,7 +21,7 @@
     },
     {
         "simulationType": "MyNewMethod",
-        "containerImage": "mynew_image:latest", 
+        "containerImage": "mynewmethod_image:latest", 
         "envVars": {},
         "label": "My New Method",
         "entryFile":"MyNewMethodInterface.py",
