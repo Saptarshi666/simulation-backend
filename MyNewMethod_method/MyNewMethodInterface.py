@@ -29,20 +29,16 @@ if __name__ == "__main__":
     import os
 
     from HelperFunctions import (
-        find_input_file_in_subfolders,
-        create_tmp_from_input,
-        save_results,
+        save_results
     )
-
-    # Load the input file
-    file_name = find_input_file_in_subfolders(
-        os.path.dirname(__file__), "exampleInput_MyNewMethod.json"
-    )
-    json_tmp_file = create_tmp_from_input(file_name)
+    
+    json_file_path = os.environ.get("JSON_PATH")
+    
+    print(f"Running MyNewMethod method with JSON_PATH={json_file_path}")
 
     # Run the method
     my_new_method = MyNewMethod()
-    my_new_method.run_simulation(json_tmp_file)
+    my_new_method.run_simulation(json_file_path)
 
     # Save the results to a separate file
-    save_results(json_tmp_file)
+    save_results(json_file_path)

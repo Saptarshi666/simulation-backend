@@ -164,11 +164,11 @@ class DEMethod(SimulationMethod):
 if __name__ == "__main__":
 
     from HelperFunctions import (
-        find_input_file_in_subfolders,
-        create_tmp_from_input,
         save_results,
         plot_results,
     )
+    # JSON path in the uploads folder. This variable is set for the 
+    # container when it is started up. 
     json_file_path = os.environ.get("JSON_PATH")
     print(f"Running DE method with JSON_PATH={json_file_path}")
     de_method = DEMethod()

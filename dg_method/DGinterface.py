@@ -85,7 +85,7 @@ def dg_method(json_file_path: str | Path, save_results_to_json: bool = True):
             absorption_coefficient,
             surface_absorption,
             triangle_face_absorption,
-        ) = self._surface_materials(result_container, c0)
+        ) = surface_materials(result_container, c0)
         BC_labels = {}
         RIvals = {}
         i = 0
@@ -231,120 +231,120 @@ def dg_method(json_file_path: str | Path, save_results_to_json: bool = True):
             results.write_results(os.path.join(output_path, output_results), file_format, append=True)
         print("Finished!")
 
+def surface_materials(result_container, c0):
+    vGroups = gmsh.model.getPhysicalGroups(
+        -1
+    )  # these are the entity tag and physical groups in the msh file.
+    vGroupsNames = (
+        []
+    )  # these are the entity tag and physical groups in the msh file + their names
+    for iGroup in vGroups:
+        dimGroup = iGroup[
+            0
+        ]  # entity tag: 1 lines, 2 surfaces, 3 volumes (1D, 2D or 3D)
+        tagGroup = iGroup[
+            1
+        ]  # physical tag group (depending on material properties defined in SketchUp)
+        namGroup = gmsh.model.getPhysicalName(
+            dimGroup, tagGroup
+        )  # names of the physical groups defined in SketchUp
+        alist = [
+            dimGroup,
+            tagGroup,
+            namGroup,
+        ]  # creates a list of the entity tag, physical tag group and name
+        # print(alist)
+        vGroupsNames.append(alist)
+
+    # Initialize a list to store surface tags and their absorption coefficients
+    surface_absorption = (
+        []
+    )  # initialization absorption term (alpha*surfaceofwall) for each wall of the room
+    triangle_face_absorption = (
+        []
+    )  # initialization absorption term for each triangle face at the boundary and per each wall
+    absorption_coefficient = {}
+
+    materialNames = []
+    for group in vGroupsNames:
+        if group[0] != 2:
+            continue
+        name_group = group[2]
+        name_split = name_group.split("$")
+        name_abs_coeff = name_split[0]
+        materialNames.append(name_abs_coeff)
+
+        abscoeff = result_container["absorption_coefficients"][name_abs_coeff]
+
+        abscoeff = abscoeff.split(",")
+
+        if result_container:
+            simulation_settings = result_container["simulationSettings"]
+
+            # abscoeff = [float(i) for i in abscoeff][-1] #for one frequency
+            abscoeff_list = [float(i) for i in abscoeff]  # for multiple frequencies
+
+        physical_tag = group[1]  # Get the physical group tag
+        entities = gmsh.model.getEntitiesForPhysicalGroup(
+            2, physical_tag
+        )  # Retrieve all the entities in this physical group (the entities are the number of walls in the physical group)
+
+        Abs_term = abs_term(
+            3, c0, abscoeff_list
+        )  # calculates the absorption term based on the type of boundary condition th
+        for entity in entities:
+            absorption_coefficient[entity] = abscoeff_list
+            surface_absorption.append(
+                (entity, Abs_term)
+            )  # absorption term (alpha*surfaceofwall) for each wall of the room
+            surface_absorption = sorted(surface_absorption, key=lambda x: x[0])
+
+    for entity, Abs_term in surface_absorption:
+        triangle_faces, _ = gmsh.model.mesh.getElementsByType(
+            2, entity
+        )  # Get all the triangle faces for the current surface
+        triangle_face_absorption.extend(
+            [Abs_term] * len(triangle_faces)
+        )  # Append the Abs_term value for each triangle face
+
+    return (
+        materialNames,
+        absorption_coefficient,
+        surface_absorption,
+        triangle_face_absorption,
+    )
+
+def abs_term(th, c0, abscoeff_list):
+    """ Absorption term for boundary conditions """
+    Absx_array = np.array([])
+    for abs_coeff in abscoeff_list:
+        # print(abs_coeff)
+        if th == 1:
+            Absx = (c0 * abs_coeff) / 4  # Sabine
+        elif th == 2:
+            Absx = (c0 * (-log(1 - abs_coeff))) / 4  # Eyring
+        elif th == 3:
+            Absx = (c0 * abs_coeff) / (2 * (2 - abs_coeff))  # Modified by Xiang
+        Absx_array = np.append(Absx_array, Absx)
+    return Absx_array
+
 class DGMethod(SimulationMethod):
     def __init__(self):
         super().__init__()
-    
-    def _abs_term(self, th, c0, abscoeff_list):
-        """ Absorption term for boundary conditions """
-        Absx_array = np.array([])
-        for abs_coeff in abscoeff_list:
-            # print(abs_coeff)
-            if th == 1:
-                Absx = (c0 * abs_coeff) / 4  # Sabine
-            elif th == 2:
-                Absx = (c0 * (-log(1 - abs_coeff))) / 4  # Eyring
-            elif th == 3:
-                Absx = (c0 * abs_coeff) / (2 * (2 - abs_coeff))  # Modified by Xiang
-            Absx_array = np.append(Absx_array, Absx)
-        return Absx_array
 
-
-    def _surface_materials(self, result_container, c0):
-        vGroups = gmsh.model.getPhysicalGroups(
-            -1
-        )  # these are the entity tag and physical groups in the msh file.
-        vGroupsNames = (
-            []
-        )  # these are the entity tag and physical groups in the msh file + their names
-        for iGroup in vGroups:
-            dimGroup = iGroup[
-                0
-            ]  # entity tag: 1 lines, 2 surfaces, 3 volumes (1D, 2D or 3D)
-            tagGroup = iGroup[
-                1
-            ]  # physical tag group (depending on material properties defined in SketchUp)
-            namGroup = gmsh.model.getPhysicalName(
-                dimGroup, tagGroup
-            )  # names of the physical groups defined in SketchUp
-            alist = [
-                dimGroup,
-                tagGroup,
-                namGroup,
-            ]  # creates a list of the entity tag, physical tag group and name
-            # print(alist)
-            vGroupsNames.append(alist)
-
-        # Initialize a list to store surface tags and their absorption coefficients
-        surface_absorption = (
-            []
-        )  # initialization absorption term (alpha*surfaceofwall) for each wall of the room
-        triangle_face_absorption = (
-            []
-        )  # initialization absorption term for each triangle face at the boundary and per each wall
-        absorption_coefficient = {}
-
-        materialNames = []
-        for group in vGroupsNames:
-            if group[0] != 2:
-                continue
-            name_group = group[2]
-            name_split = name_group.split("$")
-            name_abs_coeff = name_split[0]
-            materialNames.append(name_abs_coeff)
-
-            abscoeff = result_container["absorption_coefficients"][name_abs_coeff]
-
-            abscoeff = abscoeff.split(",")
-
-            if result_container:
-                simulation_settings = result_container["simulationSettings"]
-
-                # abscoeff = [float(i) for i in abscoeff][-1] #for one frequency
-                abscoeff_list = [float(i) for i in abscoeff]  # for multiple frequencies
-
-            physical_tag = group[1]  # Get the physical group tag
-            entities = gmsh.model.getEntitiesForPhysicalGroup(
-                2, physical_tag
-            )  # Retrieve all the entities in this physical group (the entities are the number of walls in the physical group)
-
-            Abs_term = self._abs_term(
-                3, c0, abscoeff_list
-            )  # calculates the absorption term based on the type of boundary condition th
-            for entity in entities:
-                absorption_coefficient[entity] = abscoeff_list
-                surface_absorption.append(
-                    (entity, Abs_term)
-                )  # absorption term (alpha*surfaceofwall) for each wall of the room
-                surface_absorption = sorted(surface_absorption, key=lambda x: x[0])
-
-        for entity, Abs_term in surface_absorption:
-            triangle_faces, _ = gmsh.model.mesh.getElementsByType(
-                2, entity
-            )  # Get all the triangle faces for the current surface
-            triangle_face_absorption.extend(
-                [Abs_term] * len(triangle_faces)
-            )  # Append the Abs_term value for each triangle face
-
-        return (
-            materialNames,
-            absorption_coefficient,
-            surface_absorption,
-            triangle_face_absorption,
-        )
-
-    
     def run_simulation(self, json_file_path):
         dg_method(json_file_path)
         
 
 if __name__ == "__main__":
     from HelperFunctions import (
-            find_input_file_in_subfolders,
-            create_tmp_from_input,
+
             save_results,
             plot_dg_results
         )
+
+    # JSON path in the uploads folder. This variable is set for the 
+    # container when it is started up. 
     json_file_path = os.environ.get("JSON_PATH")
     
     print(f"Running DG method with JSON_PATH={json_file_path}")

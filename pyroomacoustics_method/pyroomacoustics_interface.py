@@ -5,6 +5,8 @@ import gmsh
 import numpy as np
 import warnings
 import os
+from pathlib import Path
+import json
 
 from simulation_method_interface import SimulationMethod
 
@@ -345,24 +347,18 @@ def export_rir_to_input(json_file_path, rir):
 if __name__ == "__main__":
 
     from HelperFunctions import (
-            find_input_file_in_subfolders,
-            create_tmp_from_input,
             save_results,
-            plot_results
         )
 
-    # Load the input file
-    file_name = find_input_file_in_subfolders(
-        os.path.dirname(__file__), "exampleInput_pyroomacoustics.json"
-    )
-    json_tmp_file = create_tmp_from_input(file_name)
+    # Will not work! JSON file structure expected in the PyRoomAcoustics
+    # interface does not match the JSON created by the backend
+    json_file_path = os.environ.get("JSON_PATH")
+
+    print(f"Running PyRoomAcoustics method with JSON_PATH={json_file_path}")
+
     pyroomacoustics_method = PyroomacousticsMethod()
     # Run the method
-    print(f"Created temporary settings file: {json_tmp_file}")
-    pyroomacoustics_method.run_simulation(json_tmp_file)
+    pyroomacoustics_method.run_simulation(json_file_path)
 
-    # Save the results to a separate file
-    save_results(json_tmp_file)
-
-    # Plot results
-    plot_results(json_tmp_file)
+    # Export results to local file structure 
+    save_results(json_file_path)
