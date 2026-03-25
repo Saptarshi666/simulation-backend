@@ -22,7 +22,7 @@ COPY pyroomacoustics_method/pyroomacoustics_interface.py .
 COPY common/MeasurementRoom.geo .
 COPY common/MeasurementRoom.msh .
 COPY common/HelperFunctions.py .
-COPY pyroomacoustics_method/exampleInput_pyroomacoustics.json .
+COPY common/simulation_method_interface.py .
 
 # Default command to run the containerized DE method
 CMD ["python", "pyroomacoustics_interface.py"]

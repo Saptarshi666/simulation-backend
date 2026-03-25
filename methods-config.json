@@ -21,24 +21,12 @@
     },
     {
         "simulationType": "MyNewMethod",
-        "containerImage": "mynew_image:latest", 
+        "containerImage": "mynewmethod_image:latest", 
         "envVars": {},
         "label": "My New Method",
         "entryFile":"MyNewMethodInterface.py",
         "settings":"my_new_setting.json",
         "repositoryURL":"",
         "documentationURL":""
-
-    },
-    {
-        "simulationType": "PA",
-        "containerImage": "pa_image:latest", 
-        "envVars": {},
-        "label": "Pyromacoustics Method",
-        "entryFile":"pyroomacoustics_interface.py",
-        "settings":"examples.json",
-        "repositoryURL":"",
-        "documentationURL":""
-
     }
 ]

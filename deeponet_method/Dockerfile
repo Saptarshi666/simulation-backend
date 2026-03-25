@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
-COPY de_method/requirements.txt .
+COPY deeponet_method/requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
@@ -22,7 +22,8 @@ COPY deeponet_method/DeepONetInterface.py .
 COPY common/MeasurementRoom.geo .
 COPY common/MeasurementRoom.msh .
 COPY common/HelperFunctions.py .
-COPY deeponet_method/exampleInput_deeponet_acoustics.json .
+COPY common/simulation_method_interface.py .
+
 
 # Default command to run the containerized DE method
 CMD ["python", "DeepONetInterface.py"]

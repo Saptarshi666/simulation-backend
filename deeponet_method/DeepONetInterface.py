@@ -11,7 +11,6 @@ from scipy.io import wavfile
 
 from deeponet_acoustics.end2end.train import train
 from deeponet_acoustics.end2end.inference import inference
-from simulation_backend.DGinterface import dg_method
 
 
 def _resolve_path(path: str, base_dir: str) -> str:
@@ -548,7 +547,7 @@ def deeponet_method(json_file_path: str | Path, output_json_path: str | Path = N
 
 
 if __name__ == "__main__":
-    from simulation_backend import (
+    from HelperFunctions import (
         find_input_file_in_subfolders,
         create_tmp_from_input,
         save_results,
@@ -565,9 +564,7 @@ if __name__ == "__main__":
                 os.unlink(file_path)
 
     # Load the input file
-    file_name = find_input_file_in_subfolders(
-        os.path.dirname(__file__), "exampleInput_deeponet_acoustics.json"
-    )
+    file_name = "exampleInput_deeponet_acoustics.json"
     json_tmp_file = create_tmp_from_input(file_name)
 
     # Define output path

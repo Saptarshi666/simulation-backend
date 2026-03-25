@@ -22,7 +22,7 @@ COPY MyNewMethod_method/MyNewMethodInterface.py .
 COPY common/MeasurementRoom.geo .
 COPY common/MeasurementRoom.msh .
 COPY common/HelperFunctions.py .
-COPY MyNewMethod_method/exampleInput_MyNewMethod.json .
+COPY common/simulation_method_interface.py .
 
 # Default command to run the containerized DE method
 CMD ["python", "MyNewMethodInterface.py"]

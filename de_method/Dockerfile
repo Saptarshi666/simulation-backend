@@ -22,7 +22,8 @@ COPY de_method/DEinterface.py .
 COPY common/MeasurementRoom.geo .
 COPY common/MeasurementRoom.msh .
 COPY common/HelperFunctions.py .
-COPY de_method/exampleInput_DE.json .
+COPY common/simulation_method_interface.py .
+
 
 # Default command to run the containerized DE method
 CMD ["python", "DEinterface.py"]
